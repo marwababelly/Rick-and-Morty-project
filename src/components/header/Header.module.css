@@ -1,0 +1,12 @@
+.pic {
+    width: 4rem;
+    margin-left: 3rem;
+    margin-top: 0.5rem;
+}
+
+Image {
+    width: 250px;
+    height: 100px;
+    background-color: rebeccapurple;
+    color: #bbb;
+}
