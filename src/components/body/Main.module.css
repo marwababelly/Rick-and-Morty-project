@@ -4,3 +4,13 @@
     flex-wrap: wrap;
     justify-content: space-between;
 }
+
+.cardLoading {
+    text-align: center;
+    color: rgb(58, 55, 55);
+}
+
+.cardsError {
+    text-align: center;
+    color: red;
+}

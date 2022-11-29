@@ -8,5 +8,5 @@ Image {
     width: 250px;
     height: 100px;
     background-color: rebeccapurple;
-    color: #bbb;
+    width: fit-content;
 }
