@@ -13,21 +13,22 @@ const AvailableCards = () => {
 
   useEffect(() => {
     const fetchCard = axios.get(baseURL).then((response) => {
+    console.log(response);
 
-    if(!response.ok) {
-        throw new Error('Something went wrong!');
-    }
-    
+    // if(!response.ok) {
+    //     throw new Error('Something went wrong!');
+    // }
+
+
     const LoadCard = [];
-
-    for(let item in response.data.results) {
-      LoadCard.push({
-        id: item.id,
-        image: item.image,
-        name: item.name,
-        status: item.status,
-      });
-    }
+    for (const key in response.data.results) {
+        LoadCard.push({
+          id: response.data.results[key].id,
+          name: response.data.results[key].name,
+          image: response.data.results[key].image,
+          status: response.data.results[key].status,
+        });
+      }
 
     setCards(LoadCard);
     setIsLoading(false);
@@ -57,6 +58,7 @@ const AvailableCards = () => {
 
   const cardList = cards.map((card) => (
     <Placard 
+    key={card.id}
     id={card.id}
     image={card.image}
     name={card.name}
