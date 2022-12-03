@@ -4,7 +4,6 @@ import Col from 'react-bootstrap/Col';
 
 const Placard = (props) => {
 
-
   return (
     <Col md="4">  
       <Card className="d-inline-flex my-3 mx-4">  

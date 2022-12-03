@@ -1,27 +1,41 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
 import Placard from "../ui/Placard";
 import style from './Main.module.css';
 
-const baseURL = "https://rickandmortyapi.com/api/character";
+// const baseURL = "https://rickandmortyapi.com/api/character";
+
+// const scrollTop = document.documentElement.scrollTop;
+// const scrollHeight = document.documentElement.scrollHeight;
+// const clientHeight = document.documentElement.clientHeight;
+
+const LoadCard = [];
 
 const AvailableCards = () => {
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState();
+  const [currentPage, setCurrrntPage] = useState(1);
+  const [prevPage, setPrevPage] = useState(0);
+  const [wasLastList, setWasLastList] = useState(false);
+  const listInnerRef = useRef();
 
   useEffect(() => {
-    const fetchCard = axios.get(baseURL).then((response) => {
-    console.log(response);
+    window.addEventListener('scroll', onScroll);
+    const fetchData = async () => {
+      const response = await axios.get(
+        `https://rickandmortyapi.com/api/character/?page=${currentPage}`
+      );
 
-    // if(!response.ok) {
-    //     throw new Error('Something went wrong!');
-    // }
+      console.log(response.data.results);
 
+      if(!response.data.results.length) {
+        setWasLastList(true);
+        return;
+      }
 
-    const LoadCard = [];
-    for (const key in response.data.results) {
+      for (const key in response.data.results) {
         LoadCard.push({
           id: response.data.results[key].id,
           name: response.data.results[key].name,
@@ -29,16 +43,33 @@ const AvailableCards = () => {
           status: response.data.results[key].status,
         });
       }
+      
+      setIsLoading(false);
+      setPrevPage(currentPage);
+      setCards([...cards, ...LoadCard]);
 
-    setCards(LoadCard);
-    setIsLoading(false);
+    };
+
+    if(!wasLastList && prevPage !== currentPage) {
+      fetchData();
+    }
+
+    fetchData().catch((error) => {
+      setIsLoading(false);
+      setHttpError(error.message);
     });
 
-    fetchCard.catch((error) => {
-    setIsLoading(false);
-    setHttpError(error.message);
-    });
-  }, []);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [currentPage]);
+
+  const onScroll = () => {
+    if(listInnerRef.current) {
+      const {scrollTop, scrollHeight, clientHeight} = listInnerRef.current;
+      if(scrollTop + clientHeight >= scrollHeight) {
+        setCurrrntPage(currentPage + 1);
+      }
+    }
+  };
 
   if(isLoading) {
     return(
@@ -58,7 +89,7 @@ const AvailableCards = () => {
 
   const cardList = cards.map((card) => (
     <Placard 
-    key={card.id}
+    // key={card.id}
     id={card.id}
     image={card.image}
     name={card.name}
@@ -67,7 +98,9 @@ const AvailableCards = () => {
   ));
 
   return (
-    <div className="App">  
+    <div className="App"
+    ref={listInnerRef}
+    >  
     <Container className={style.test}>
       {cardList}
     </Container>
