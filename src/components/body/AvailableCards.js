@@ -6,13 +6,10 @@ import style from './Main.module.css';
 
 // const baseURL = "https://rickandmortyapi.com/api/character";
 
-// const scrollTop = document.documentElement.scrollTop;
-// const scrollHeight = document.documentElement.scrollHeight;
-// const clientHeight = document.documentElement.clientHeight;
-
 const LoadCard = [];
 
 const AvailableCards = () => {
+
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState();
@@ -28,8 +25,6 @@ const AvailableCards = () => {
         `https://rickandmortyapi.com/api/character/?page=${currentPage}`
       );
 
-      console.log(response.data.results);
-
       if(!response.data.results.length) {
         setWasLastList(true);
         return;
@@ -41,13 +36,13 @@ const AvailableCards = () => {
           name: response.data.results[key].name,
           image: response.data.results[key].image,
           status: response.data.results[key].status,
+          location: response.data.results[key].location.name
         });
       }
       
       setIsLoading(false);
       setPrevPage(currentPage);
       setCards([...cards, ...LoadCard]);
-
     };
 
     if(!wasLastList && prevPage !== currentPage) {
@@ -59,13 +54,12 @@ const AvailableCards = () => {
       setHttpError(error.message);
     });
 
-    return () => window.removeEventListener('scroll', onScroll);
   }, [currentPage]);
 
   const onScroll = () => {
     if(listInnerRef.current) {
-      const {scrollTop, scrollHeight, clientHeight} = listInnerRef.current;
-      if(scrollTop + clientHeight >= scrollHeight) {
+      if(window.scrollY + window.innerHeight >= 
+        document.documentElement.scrollHeight) {
         setCurrrntPage(currentPage + 1);
       }
     }
@@ -87,13 +81,37 @@ const AvailableCards = () => {
     );
   };
 
-  const cardList = cards.map((card) => (
+  // const getFilteredCards = (event) => {
+  //   const selectedStatus = event.target.value.toLowerCase();
+    
+  //   if(!selectedStatus) {
+  //     return LoadCard;
+  //   }
+  //   return axios.get(`https://rickandmortyapi.com/api/character/?status=${selectedStatus}`)
+  //   .then(response => {
+  //     LoadCard = [];
+
+  //     for (const key in response.data.results) {
+  //       LoadCard.push({
+  //         id: response.data.results[key].id,
+  //         name: response.data.results[key].name,
+  //         image: response.data.results[key].image,
+  //         status: response.data.results[key].status,
+  //         location: response.data.results[key].location.name
+  //       });
+  //     }
+  //     setCards(LoadCard);
+  //   })
+  // };
+
+  const cardList = LoadCard.map((card, index) => (
     <Placard 
-    // key={card.id}
-    id={card.id}
-    image={card.image}
-    name={card.name}
-    status={card.status}
+      key={index}
+      id={card.id}
+      image={card.image}
+      name={card.name}
+      status={card.status}
+      location={card.location}
     />
   ));
 
@@ -101,7 +119,7 @@ const AvailableCards = () => {
     <div className="App"
     ref={listInnerRef}
     >  
-    <Container className={style.test}>
+    <Container className={style.container}>
       {cardList}
     </Container>
     </div>  

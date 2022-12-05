@@ -1,12 +1,25 @@
-.pic {
+.logo {
     width: 4rem;
-    margin-left: 3rem;
+    margin-left: 5rem;
     margin-top: 0.5rem;
 }
 
 Image {
     width: 250px;
     height: 100px;
-    background-color: rebeccapurple;
     width: fit-content;
 }
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+    color: rgb(32, 35, 41);
+    font-weight: 900;
+    font-size: 3.75rem;
+    width: 81rem;
+    margin: 2rem;
+}
+

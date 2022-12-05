@@ -7,8 +7,9 @@ import style from './Main.module.css';
 const Main = () => {
   return (
     <div className="App">  
-    <Container className={style.test}>
-      <AvailableCards />
+    <Container className={style.container}>
+      <AvailableCards 
+      />
     </Container>
     </div>  
   );

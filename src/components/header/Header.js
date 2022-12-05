@@ -1,49 +1,71 @@
 import React from "react";
+import { useContext } from "react";
+import CartContext from "../../store/cart-context";
 import Image from 'react-bootstrap/Image'
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import style from './Header.module.css';
+import { Container } from "react-bootstrap";
 import images from '../../assets/images.png';
+import style from './Header.module.css';
 
 const Header = () => {
+    const cardCtx = useContext(CartContext);
+
+    const changeCardHandler = (e) => {
+        cardCtx.getFilteredCards(e.target.value);
+    }
+
     return (
         <div className="row align-items-start">
             <ul className="nav row align-items-start justify-content-space-between">
                 <li className="col nav-item">
                     <a className="nav-link active" href="#">
-                        <Image  className={style.pic}  src={images}/>
+                        <Image  
+                            className={style.logo} 
+                            src={images}
+                        />
                     </a>
                 </li>
                 
                 <li className="col nav-item justify-content-space-between bg-red">
                     <div className="row">    
                         <DropdownButton
-                            id="dropdown-button-dark-example1"
-                            variant="secondary"
-                            menuVariant="dark"
-                            title="Name"
-                            className="col mt-4"
-                        >
-                            <Dropdown.Item href="#/action-1" active>Bepisian</Dropdown.Item>
-                            <Dropdown.Item href="#/action-2">Michael Jenkins</Dropdown.Item>
-                            <Dropdown.Item href="#/action-3">Mr. Meeseeks</Dropdown.Item>
-                            <Dropdown.Item href="#/action-4">Shleemypants</Dropdown.Item>
-                        </DropdownButton>
-
-                        <DropdownButton
                             id="dropdown-button-dark-example2"
                             variant="secondary"
                             menuVariant="dark"
-                            title="State"
-                            className="col mt-4"
+                            title="Status"
+                            className="col mt-4 d-flex  justify-content-end "
                         >
-                            <Dropdown.Item href="#/action-1" active>Unknown</Dropdown.Item>
-                            <Dropdown.Item href="#/action-2">Alive</Dropdown.Item>
-                            <Dropdown.Item href="#/action-3">Dead</Dropdown.Item>
+                            <Dropdown.Item
+                                value="unknown" 
+                                onClick={changeCardHandler}
+                            >
+                                Unknown
+                            </Dropdown.Item>
+
+                            <Dropdown.Item 
+                                value="alive"
+                                onClick={changeCardHandler}
+                            >
+                                 Alive
+                            </Dropdown.Item>
+
+                            <Dropdown.Item 
+                                value="dead "
+                                onClick={changeCardHandler}
+                            >
+                                Dead
+                            </Dropdown.Item>
                         </DropdownButton>
                     </div>
                 </li>
             </ul>
+
+            <Container className="row nav-item">
+                <h2 className={style.title}>
+                    The Rick and Morty API
+                </h2>
+            </Container>
         </div>
     );
 };
