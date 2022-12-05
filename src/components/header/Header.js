@@ -12,7 +12,7 @@ const Header = () => {
     const cardCtx = useContext(CartContext);
 
     const changeCardHandler = (e) => {
-        cardCtx.getFilteredCards(e.target.value);
+        cardCtx.filteredCards(e.target.value);
     }
 
     return (
@@ -27,14 +27,14 @@ const Header = () => {
                     </a>
                 </li>
                 
-                <li className="col nav-item justify-content-space-between bg-red">
+                <li className="col nav-item justify-content-space-between">
                     <div className="row">    
                         <DropdownButton
-                            id="dropdown-button-dark-example2"
+                            id="dropdown-button"
                             variant="secondary"
                             menuVariant="dark"
                             title="Status"
-                            className="col mt-4 d-flex  justify-content-end "
+                            className="col mt-4 d-flex justify-content-end "
                         >
                             <Dropdown.Item
                                 value="unknown" 

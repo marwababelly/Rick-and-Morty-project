@@ -7,11 +7,10 @@ const Placard = (props) => {
 
   return (
     <Col md="4">  
-      <Card className="d-inline-flex my-3 mx-4">  
+      <Card className="d-inline-flex my-3 mx-4 bg-secondary w-22rem h-20vh">  
         <Card.Img 
           variant="top" 
           src={props.image} 
-          className={style.cardImg}
         />  
 
         <Card.Body>  
@@ -31,6 +30,7 @@ const Placard = (props) => {
             {props.location}
           </Card.Text>
         </Card.Body>
+        
       </Card>  
     </Col>   
   );

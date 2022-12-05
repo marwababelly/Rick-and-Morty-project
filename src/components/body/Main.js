@@ -8,8 +8,7 @@ const Main = () => {
   return (
     <div className="App">  
     <Container className={style.container}>
-      <AvailableCards 
-      />
+      <AvailableCards />
     </Container>
     </div>  
   );

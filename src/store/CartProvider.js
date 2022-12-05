@@ -1,20 +1,19 @@
 import axios from "axios";
 import { useReducer } from "react";
-import { propTypes } from "react-bootstrap/esm/Image";
-
 import CartContext from "./cart-context";
+
+const initialStatus = {};
 
 const cartReducer = (state, action) => {
     const selectedStatus = action.target.value.toLowerCase();
     
     if(!selectedStatus) {
-      return;
+      return CardStatus;
     }
 
     return axios.get(`https://rickandmortyapi.com/api/character/?status=${selectedStatus}`)
     .then(response => {
       LoadCard = [];
-
       for (const key in response.data.results) {
         LoadCard.push({
           id: response.data.results[key].id,
@@ -24,23 +23,27 @@ const cartReducer = (state, action) => {
           location: response.data.results[key].location.name
         });
       }
-      LoadCard = [...state.item];
+      LoadCard = [state.item];
     })
 };
 
 const CartProvider = (props) => {
-    const [CartState, dispatchCartAction] = useReducer(
+    const [CardStatus, dispatchCardAction] = useReducer(
         cartReducer,
-        defaultCartState
+        initialStatus
     );
 
     const getFilteredCards = (item) => {
-        dispatchCartAction({type: Filter, id: item.id})
+        dispatchCardAction({type: Filter, id: item.id})
     };
 
+    const cardContext = {
+        filteredCards: getFilteredCards
+    }
+
     return (
-        <CartContext.Provider>
-            {propTypes.children}
+        <CartContext.Provider value={cardContext}>
+            {props.children}
         </CartContext.Provider>
     );
 };

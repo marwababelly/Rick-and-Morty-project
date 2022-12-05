@@ -1,7 +1,7 @@
 import React from "react";
 
 const CartContext = React.createContext({
-    getFilteredCards: (item) => {}
+    filteredCards: (item) => {}
 });
 
 export default CartContext;

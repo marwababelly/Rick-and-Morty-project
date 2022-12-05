@@ -20,6 +20,7 @@ const AvailableCards = () => {
 
   useEffect(() => {
     window.addEventListener('scroll', onScroll);
+
     const fetchData = async () => {
       const response = await axios.get(
         `https://rickandmortyapi.com/api/character/?page=${currentPage}`
@@ -80,29 +81,6 @@ const AvailableCards = () => {
     </section>
     );
   };
-
-  // const getFilteredCards = (event) => {
-  //   const selectedStatus = event.target.value.toLowerCase();
-    
-  //   if(!selectedStatus) {
-  //     return LoadCard;
-  //   }
-  //   return axios.get(`https://rickandmortyapi.com/api/character/?status=${selectedStatus}`)
-  //   .then(response => {
-  //     LoadCard = [];
-
-  //     for (const key in response.data.results) {
-  //       LoadCard.push({
-  //         id: response.data.results[key].id,
-  //         name: response.data.results[key].name,
-  //         image: response.data.results[key].image,
-  //         status: response.data.results[key].status,
-  //         location: response.data.results[key].location.name
-  //       });
-  //     }
-  //     setCards(LoadCard);
-  //   })
-  // };
 
   const cardList = LoadCard.map((card, index) => (
     <Placard 
