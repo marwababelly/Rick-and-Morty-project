@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useContext } from "react";
 import CartContext from "../../store/cart-context";
 import Image from 'react-bootstrap/Image'
@@ -7,12 +7,34 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import { Container } from "react-bootstrap";
 import images from '../../assets/images.png';
 import style from './Header.module.css';
+import axios from "axios";
 
 const Header = () => {
-    const cardCtx = useContext(CartContext);
+    const [filteredCards, setFilteredCards] = useState([]);
+    const LoadCard = [];
+    // const cardCtx = useContext(CartContext);
 
-    const changeCardHandler = (e) => {
-        cardCtx.filteredCards(e.target.value);
+    // const changeCardHandler = (e) => {
+    //     cardCtx.filteredCards(e.target.value);
+    // }
+
+    const changeCardHandler = (event) => {
+        const getStatus = event.target.value;
+        axios.get(`https://rickandmortyapi.com/api/character/?status=${getStatus}`)
+        .then(response => {
+            for (const key in response.data.results) {
+                LoadCard.push({
+                  id: response.data.results[key].id,
+                  name: response.data.results[key].name,
+                  image: response.data.results[key].image,
+                  status: response.data.results[key].status,
+                  location: response.data.results[key].location.name
+                });
+            }
+        }).catch(e => console.log(e));
+        console.log([...filteredCards, ...LoadCard]);
+        setFilteredCards([...filteredCards, ...LoadCard]);
+
     }
 
     return (
